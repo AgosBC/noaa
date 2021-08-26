@@ -58,7 +58,7 @@ public class MuestraService {
     }
 
     public Muestra buscarPorId(Integer id) {
-        return null;
+        return repo.findByMuestraId(id);
     }
 
    
