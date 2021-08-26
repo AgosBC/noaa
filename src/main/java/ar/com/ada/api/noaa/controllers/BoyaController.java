@@ -16,67 +16,57 @@ import ar.com.ada.api.noaa.models.response.GenericResponse;
 import ar.com.ada.api.noaa.services.BoyaServece;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
 @RestController
 public class BoyaController {
 
-    /**POST /boyas : que permita la creación boyas
-RequestBody: {
-“longitudInstalacion”: 34.8877,
-“latitudInstalacion”: 78.230 */
+   
+    @Autowired
+    BoyaServece service;
 
-@Autowired
-BoyaServece service;
+    @PostMapping("/boyas")
+    public ResponseEntity<?> crearBoya(@RequestBody Boya boya) {
 
-@PostMapping("/boyas")
-public ResponseEntity<?> crearBoya(@RequestBody Boya boya){
+        GenericResponse r = new GenericResponse();
 
-    GenericResponse r = new GenericResponse();
+        service.crearBoya(boya.getLatitudInstalacion(), boya.getLongitudInstalacion());
 
-    service.crearBoya(boya.getLatitudInstalacion(), boya.getLongitudInstalacion());
+        r.id = boya.getBoyaId();
+        r.isOk = true;
+        r.message = "La boya ha sido creada con exito";
 
-    r.id = boya.getBoyaId();
-    r.isOk = true;
-    r.message = "La boya ha sido creada con exito";
+        return ResponseEntity.ok(r);
 
-    return ResponseEntity.ok(r);    
+    }
 
+   
 
-}
+    @GetMapping("/boyas")
+    public ResponseEntity<List<Boya>> obtenerBoyas() {
 
-/**GET /boyas : que devuelva las boyas SIN las muestras.
-GET /boyas/{id} : que devuelva la info de una boya en particular(SIN las muestras) */
+        return ResponseEntity.ok(service.obtenerBoyas());
+    }
 
-@GetMapping("/boyas")
-public ResponseEntity<List<Boya>> obtenerBoyas(){
+    @GetMapping("/boyas/{id}")
+    public ResponseEntity<Boya> buscarPorId(@PathVariable Integer id) {
 
-    return ResponseEntity.ok(service.obtenerBoyas());
-}
+        return ResponseEntity.ok(service.buscarPorId(id));
+    }
 
-@GetMapping("/boyas/{id}")
-public ResponseEntity<Boya> buscarPorId(@PathVariable Integer id){
+    @PostMapping(value = "/boyas/{id}")
+    public ResponseEntity<GenericResponse> actualizarColorBoya(@PathVariable Integer id,
+            @RequestBody ColorBoyaRequest color) {
 
-    return ResponseEntity.ok(service.buscarPorId(id));
-}
+        GenericResponse r = new GenericResponse();
 
-@PostMapping(value="/boyas/{id}")
-public ResponseEntity<GenericResponse> actualizarColorBoya(@PathVariable Integer id, @RequestBody ColorBoyaRequest color) {
+        Boya boya = service.buscarPorId(id);
 
-    GenericResponse r = new GenericResponse();
+        boya.setColorLuzId(color.color);
 
-    Boya boya = service.buscarPorId(id);
+        service.guardar(boya);
 
-    boya.setColorLuzId(color.color);
-
-    service.guardar(boya);
-    
-    r.isOk = true;
-    r.message = "Color de boya actualizado";
-    return  ResponseEntity.ok(r);
-}
-
-
-
-
+        r.isOk = true;
+        r.message = "Color de boya actualizado";
+        return ResponseEntity.ok(r);
+    }
 
 }

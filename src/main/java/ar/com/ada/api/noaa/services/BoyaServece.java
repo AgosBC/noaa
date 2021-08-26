@@ -39,7 +39,6 @@ public class BoyaServece {
         repo.save(boya);
     }
 
-    
 
     
 }

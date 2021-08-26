@@ -23,25 +23,22 @@ public class MuestraService {
     @Autowired
     BoyaServece boyaServece;
 
-    public void crearMuestra(Integer boyaId, Date horario, String matricula, Double longitud, Double latitud,
+    public Muestra crearMuestra(Integer boyaId, Date horario, String matricula, Double latitud, Double longitud,
             Double alturaNivelDelMar) {
 
         Muestra muestra = new Muestra();
 
         muestra.setHorario(horario);
         muestra.setMatricula(matricula);
-        muestra.setLongitud(longitud);
         muestra.setLatitud(latitud);
+        muestra.setLongitud(longitud);
         muestra.setAlturaNivelDelMar(alturaNivelDelMar);
 
         Boya boya = boyaServece.buscarPorId(boyaId);
 
-        if (alturaNivelDelMar > -50 && alturaNivelDelMar < 50) {
-
+        if (alturaNivelDelMar < -50 || alturaNivelDelMar > 50) {
             boya.setColorLuzId(ColorLuzEnum.AMARILLO);
-
-        }
-        if (alturaNivelDelMar > -100 && alturaNivelDelMar < 100) {
+        } else if (alturaNivelDelMar < -100 || alturaNivelDelMar > 100) {
             boya.setColorLuzId(ColorLuzEnum.ROJO);
         } else {
             boya.setColorLuzId(ColorLuzEnum.VERDE);
@@ -49,20 +46,16 @@ public class MuestraService {
 
         boya.agregarMuestra(muestra);
 
-        repo.save(muestra);
+        return repo.save(muestra);
 
     }
 
-    public void borrar(Muestra muestra){
+    public void borrar(Muestra muestra) {
         repo.delete(muestra);
     }
 
     public Muestra buscarPorId(Integer id) {
         return repo.findByMuestraId(id);
     }
-
-   
-
-
 
 }

@@ -31,12 +31,12 @@ public class Boya {
     private Double latitudInstalacion;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "boyaId", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "boya", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Muestra> muestras = new ArrayList<>();
 
     public void agregarMuestra(Muestra muestra) {
         this.muestras.add(muestra);
-        muestra.setBoyaId(this);
+        muestra.setBoya(this);
     }
 
     public Integer getBoyaId() {

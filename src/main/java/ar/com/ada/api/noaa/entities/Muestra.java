@@ -22,14 +22,14 @@ public class Muestra {
 
     @ManyToOne
     @JoinColumn(name = "boya_id", referencedColumnName = "boya_id")
-    private Boya boyaId;
-    
+    private Boya boya;
+
     private Date horario;
 
     private Double longitud;
 
     private Double latitud;
-
+    @Column(name = "matricula_embarcacion")
     private String matricula;
 
     @Column(name = "altura_nivel_mar")
@@ -43,17 +43,13 @@ public class Muestra {
         this.muestraId = muestraId;
     }
 
-    
-
-    public Boya getBoyaId() {
-        return boyaId;
+    public Boya getBoya() {
+        return boya;
     }
 
-    public void setBoyaId(Boya boyaId) {
-        this.boyaId = boyaId;
+    public void setBoya(Boya boya) {
+        this.boya = boya;
     }
-
-    
 
     public Date getHorario() {
         return horario;
@@ -94,9 +90,5 @@ public class Muestra {
     public void setAlturaNivelDelMar(Double alturaNivelDelMar) {
         this.alturaNivelDelMar = alturaNivelDelMar;
     }
-    
-   
 
-    
-    
 }
