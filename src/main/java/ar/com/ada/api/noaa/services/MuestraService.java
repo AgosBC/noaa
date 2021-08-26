@@ -14,10 +14,10 @@ import ar.com.ada.api.noaa.repos.MuestraRepository;
 @Service
 public class MuestraService {
 
-    @Autowired 
+    @Autowired
     MuestraRepository repo;
 
-    @Autowired 
+    @Autowired
     BoyaRepository boyaRepository;
 
     @Autowired
@@ -26,61 +26,43 @@ public class MuestraService {
     public void crearMuestra(Integer boyaId, Date horario, String matricula, Double longitud, Double latitud,
             Double alturaNivelDelMar) {
 
-                Muestra muestra = new Muestra();
-                
-                muestra.setHorario(horario);
-                muestra.setMatricula(matricula);
-                muestra.setLongitud(longitud);
-                muestra.setLatitud(latitud);
-                muestra.setAlturaNivelDelMar(alturaNivelDelMar);
-                
-                Boya boya = boyaServece.buscarPorId(boyaId);
-                
-                
-                if(alturaNivelDelMar > -50 && alturaNivelDelMar < 50){
+        Muestra muestra = new Muestra();
 
-                    boya.setColorLuzId(ColorLuzEnum.AMARILLO);
+        muestra.setHorario(horario);
+        muestra.setMatricula(matricula);
+        muestra.setLongitud(longitud);
+        muestra.setLatitud(latitud);
+        muestra.setAlturaNivelDelMar(alturaNivelDelMar);
 
-                } if (alturaNivelDelMar > -100 && alturaNivelDelMar < 100){
-                    boya.setColorLuzId(ColorLuzEnum.ROJO);
-                }
-                else {
-                    boya.setColorLuzId(ColorLuzEnum.VERDE);
-                }
-            
-                
-                boya.agregarMuestra(muestra);
+        Boya boya = boyaServece.buscarPorId(boyaId);
 
-                repo.save(muestra);
+        if (alturaNivelDelMar > -50 && alturaNivelDelMar < 50) {
 
-            
+            boya.setColorLuzId(ColorLuzEnum.AMARILLO);
 
+        }
+        if (alturaNivelDelMar > -100 && alturaNivelDelMar < 100) {
+            boya.setColorLuzId(ColorLuzEnum.ROJO);
+        } else {
+            boya.setColorLuzId(ColorLuzEnum.VERDE);
+        }
 
-                
+        boya.agregarMuestra(muestra);
 
+        repo.save(muestra);
 
     }
 
+    public void borrar(Muestra muestra){
+        repo.delete(muestra);
+    }
 
-       
-}
-/**POST /muestras : que registre una muestra
-RequestBody {
-“boyaId”: 32,
-“horario”: “2020-08-08T22:25:30”, //La separación de FECHA y HORA es por “T”
-“matricula”: “99D9AAK”
-“latitud”: -17.44681203,
-“longitud”: -113.16478854,
-“alturaNivelDelMar”: 50
-}
+    public Muestra buscarPorId(Integer id) {
+        return null;
+    }
 
-Respuesta Esperada(JSON):
-{
-“id”: 25 //O cualquier número de muestra que devuelva.
-“color”: “Un Color” //Este será el color que deberá cambiar la luz de la boya
-}
+   
 
-Nota: Si cuando se carga una muestra nueva en una boya, la alturaNivelDelMar es de MENOS de
--50(menos 50) o de MAS de +50 (más 50), debera devolver “AMARILLO” en el color.
-En el caso de que sea menor a -100 o mayor a +100 el color deberá ser ROJO.
-Si no, el color deberá devolver es VERDE*/
+
+
+}
