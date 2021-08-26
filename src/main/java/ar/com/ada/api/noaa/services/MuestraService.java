@@ -1,6 +1,7 @@
 package ar.com.ada.api.noaa.services;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,9 +19,6 @@ public class MuestraService {
     MuestraRepository repo;
 
     @Autowired
-    BoyaRepository boyaRepository;
-
-    @Autowired
     BoyaServece boyaServece;
 
     public Muestra crearMuestra(Integer boyaId, Date horario, String matricula, Double latitud, Double longitud,
@@ -35,11 +33,11 @@ public class MuestraService {
         muestra.setAlturaNivelDelMar(alturaNivelDelMar);
 
         Boya boya = boyaServece.buscarPorId(boyaId);
-
-        if (alturaNivelDelMar < -50 || alturaNivelDelMar > 50) {
-            boya.setColorLuzId(ColorLuzEnum.AMARILLO);
-        } else if (alturaNivelDelMar < -100 || alturaNivelDelMar > 100) {
+        
+        if (alturaNivelDelMar < -100 || alturaNivelDelMar > 100) {
             boya.setColorLuzId(ColorLuzEnum.ROJO);
+        } else if (alturaNivelDelMar < -50 || alturaNivelDelMar > 50) {
+            boya.setColorLuzId(ColorLuzEnum.AMARILLO);
         } else {
             boya.setColorLuzId(ColorLuzEnum.VERDE);
         }
@@ -56,6 +54,14 @@ public class MuestraService {
 
     public Muestra buscarPorId(Integer id) {
         return repo.findByMuestraId(id);
+    }
+
+    public List<Muestra> buscarMuestras(Integer idBoya) {
+
+        Boya boya = boyaServece.buscarPorId(idBoya);
+
+        return boya.getMuestras();
+
     }
 
 }
