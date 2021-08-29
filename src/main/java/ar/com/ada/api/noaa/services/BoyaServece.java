@@ -1,6 +1,6 @@
 package ar.com.ada.api.noaa.services;
 
-import java.util.List;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,8 +16,8 @@ public class BoyaServece {
     @Autowired
     BoyaRepository repo;
 
-    public Boya crearBoya(Double latitud, Double longitud){
-        
+    public Boya crearBoya(Double latitud, Double longitud) {
+
         Boya boya = new Boya();
         boya.setLatitudInstalacion(latitud);
         boya.setLongitudInstalacion(longitud);
@@ -30,15 +30,20 @@ public class BoyaServece {
         return repo.findAll();
     }
 
-    public Boya buscarPorId(Integer id){
+    public Boya buscarPorId(Integer id) {
 
         return repo.findByBoyaId(id);
     }
 
-    public void guardar(Boya boya){
+    public void guardar(Boya boya) {
         repo.save(boya);
     }
 
+    /*
+     * public List<Boya> buscarPorColor(ColorLuzEnum color){
+     * 
+     * 
+     * }
+     */
 
-    
 }

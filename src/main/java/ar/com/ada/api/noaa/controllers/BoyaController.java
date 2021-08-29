@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import ar.com.ada.api.noaa.entities.Boya;
+import ar.com.ada.api.noaa.entities.Boya.ColorLuzEnum;
 import ar.com.ada.api.noaa.models.request.ColorBoyaRequest;
 import ar.com.ada.api.noaa.models.response.GenericResponse;
 import ar.com.ada.api.noaa.services.BoyaServece;
@@ -28,9 +29,9 @@ public class BoyaController {
 
         GenericResponse r = new GenericResponse();
 
-        service.crearBoya(boya.getLatitudInstalacion(), boya.getLongitudInstalacion());
+        Boya nueva = service.crearBoya(boya.getLatitudInstalacion(), boya.getLongitudInstalacion());
 
-        r.id = boya.getBoyaId();
+        r.id = nueva.getBoyaId();
         r.isOk = true;
         r.message = "La boya ha sido creada con exito";
 
@@ -68,5 +69,8 @@ public class BoyaController {
         r.message = "Color de boya actualizado";
         return ResponseEntity.ok(r);
     }
+
+  
+    
 
 }
