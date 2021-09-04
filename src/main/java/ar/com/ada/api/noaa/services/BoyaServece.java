@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 
 import ar.com.ada.api.noaa.entities.Boya;
 import ar.com.ada.api.noaa.entities.Muestra;
-import ar.com.ada.api.noaa.entities.Boya.ColorLuzEnum;
 import ar.com.ada.api.noaa.repos.BoyaRepository;
+import net.bytebuddy.asm.Advice.Return;
 
 @Service
 public class BoyaServece {
@@ -21,7 +21,8 @@ public class BoyaServece {
         Boya boya = new Boya();
         boya.setLatitudInstalacion(latitud);
         boya.setLongitudInstalacion(longitud);
-        boya.setColorLuzId(ColorLuzEnum.AZUL);
+        boya.setColorLuz("azul");
+       
 
         return repo.save(boya);
     }
@@ -39,11 +40,18 @@ public class BoyaServece {
         repo.save(boya);
     }
 
-    /*
-     * public List<Boya> buscarPorColor(ColorLuzEnum color){
-     * 
-     * 
-     * }
-     */
+    
+     public List<Boya> buscarPorColor(String color){
+        List<Boya> boyasColor = new ArrayList<>();
+
+        for (Boya boya : repo.findAll()) {
+            if (boya.getColorLuz().equals(color)){
+                boyasColor.add(boya);
+            }
+            
+        }
+        return boyasColor;
+     }
+     
 
 }

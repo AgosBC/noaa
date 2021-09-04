@@ -3,7 +3,6 @@ package ar.com.ada.api.noaa.controllers;
 import org.springframework.web.bind.annotation.RestController;
 
 import ar.com.ada.api.noaa.entities.Muestra;
-import ar.com.ada.api.noaa.entities.Boya.ColorLuzEnum;
 import ar.com.ada.api.noaa.models.request.MuestraRequest;
 import ar.com.ada.api.noaa.models.response.GenericResponse;
 import ar.com.ada.api.noaa.models.response.MuestraMinimaResponse;
@@ -38,7 +37,7 @@ public class MuestraController {
                 request.longitud, request.alturaNivelDelMar);
 
         r.id = muestra.getMuestraId();
-        r.color = muestra.getBoya().getColorLuzId();
+        r.color = muestra.getBoya().getColorLuz();
 
         return ResponseEntity.ok(r);
 
@@ -57,13 +56,20 @@ public class MuestraController {
         GenericResponse r = new GenericResponse();
 
         Muestra muestra = service.buscarPorId(id);
-        service.borrar(muestra);
+        service.setColorAzul(muestra);
 
         r.isOk = true;
-        r.message = "muestra borrada";
+        r.message = "Muestra borrada";
         return ResponseEntity.ok(r);
 
     }
+
+    @GetMapping("/muestras/colores/{color}")
+    public ResponseEntity<List<MuestraPorColorResponse>> traerMuestrasPorColor(@PathVariable String color){
+        return ResponseEntity.ok(service.buscarMuestraPorColor(color));
+    }
+
+
 
     @GetMapping("/muestras/minima/{idBoya}")
     public ResponseEntity<?> getMuestraMinBoya(@PathVariable Integer idBoya) {
@@ -72,7 +78,7 @@ public class MuestraController {
 
         Muestra muestra = service.buscarMuestraMinima(idBoya);
 
-        response.color = muestra.getBoya().getColorLuzId();
+        response.color = muestra.getBoya().getColorLuz();
         response.alturaNivelDelMarMinima = muestra.getAlturaNivelDelMar();
         response.horario = muestra.getHorario();
 

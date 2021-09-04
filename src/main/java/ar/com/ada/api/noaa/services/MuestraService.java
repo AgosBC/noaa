@@ -1,17 +1,12 @@
 package ar.com.ada.api.noaa.services;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ar.com.ada.api.noaa.entities.Boya;
 import ar.com.ada.api.noaa.entities.Muestra;
-import ar.com.ada.api.noaa.entities.Boya.ColorLuzEnum;
 import ar.com.ada.api.noaa.models.response.MuestraMinimaResponse;
 import ar.com.ada.api.noaa.models.response.MuestraPorColorResponse;
 import ar.com.ada.api.noaa.repos.BoyaRepository;
@@ -40,17 +35,22 @@ public class MuestraService {
         Boya boya = boyaServece.buscarPorId(boyaId);
 
         if (alturaNivelDelMar < -100 || alturaNivelDelMar > 100) {
-            boya.setColorLuzId(ColorLuzEnum.ROJO);
+            boya.setColorLuz("rojo");
         } else if (alturaNivelDelMar < -50 || alturaNivelDelMar > 50) {
-            boya.setColorLuzId(ColorLuzEnum.AMARILLO);
+            boya.setColorLuz("amarillo");
         } else {
-            boya.setColorLuzId(ColorLuzEnum.VERDE);
+            boya.setColorLuz("verde");
         }
 
         boya.agregarMuestra(muestra);
 
         return repo.save(muestra);
 
+    }
+
+    public void setColorAzul(Muestra muestra){
+        muestra.getBoya().setColorLuz("azul");
+        repo.save(muestra);
     }
 
     public void borrar(Muestra muestra) {
@@ -68,26 +68,28 @@ public class MuestraService {
         return boya.getMuestras();
 
     }
+    public List<MuestraPorColorResponse> buscarMuestraPorColor(String color) {
 
-    /*
-     * public void buscarMuestraPorColor(ColorLuzEnum color) {
-     * 
-     * 
-     * List <MuestraPorColorResponse> muestrasColor = new ArrayList<>(); //
-     * MuestraPorColorResponse muestraAdd = new MuestraPorColorResponse();
-     * 
-     * for (Muestra muestras : repo.findAll()) { if(muestras.equals(color)){
-     * 
-     * 
-     * muestrasColor.add(muestras); }
-     * 
-     * 
-     * }
-     * 
-     * 
-     * 
-     * }
-     */
+        List<MuestraPorColorResponse> muestrasPorColor = new ArrayList<>();
+        MuestraPorColorResponse muestraPorColor = new MuestraPorColorResponse();
+
+        
+        //List<Boya> boyasColor = boyaServece.buscarPorColor(color);
+
+        for (Muestra muestra : repo.findAll()){
+            if (muestra.getBoya().getColorLuz().equals(color)){
+                muestraPorColor.alturaNivelDelMar = muestra.getAlturaNivelDelMar();
+                muestraPorColor.boyaId = muestra.getBoya().getBoyaId();
+                muestraPorColor.horario = muestra.getHorario();
+
+                muestrasPorColor.add(muestraPorColor);
+            }
+            
+        }
+        return muestrasPorColor;
+        
+    }
+    
 
     public Muestra buscarMuestraMinima(Integer boyaId) {
 
@@ -96,7 +98,7 @@ public class MuestraService {
         List<Muestra> muestras = boya.getMuestras();
 
         Muestra muestraMinima = muestras.stream().min(Comparator.comparing(Muestra::getAlturaNivelDelMar))
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(NoSuchElementException::new); // usar en el punto de buscar lista de boyas por color, que la variable sea de tipo lista? 
 
         return muestraMinima;
 

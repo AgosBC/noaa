@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import ar.com.ada.api.noaa.entities.Boya;
-import ar.com.ada.api.noaa.entities.Boya.ColorLuzEnum;
 import ar.com.ada.api.noaa.models.request.ColorBoyaRequest;
 import ar.com.ada.api.noaa.models.response.GenericResponse;
 import ar.com.ada.api.noaa.services.BoyaServece;
@@ -61,7 +60,7 @@ public class BoyaController {
 
         Boya boya = service.buscarPorId(id);
 
-        boya.setColorLuzId(color.color);
+        boya.setColorLuz(color.color);
 
         service.guardar(boya);
 
