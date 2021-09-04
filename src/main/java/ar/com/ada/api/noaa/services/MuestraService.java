@@ -85,12 +85,13 @@ public class MuestraService {
     public List<MuestraPorColorResponse> buscarMuestrasPorColor(String color) {
 
         List<MuestraPorColorResponse> muestrasPorColor = new ArrayList<>();
-        MuestraPorColorResponse muestraPorColor = new MuestraPorColorResponse();
-
+        
         
         //List<Boya> boyasColor = boyaServece.buscarPorColor(color);
 
         for (Muestra muestra : repo.findAll()){
+
+            MuestraPorColorResponse muestraPorColor = new MuestraPorColorResponse();
 
             if (colorMuestra(muestra.getAlturaNivelDelMar()).equals(color)){
 
@@ -100,7 +101,7 @@ public class MuestraService {
 
                 muestrasPorColor.add(muestraPorColor);//add(muestraPorColor);
                 
-            }
+            } 
             
         }
         return muestrasPorColor;
