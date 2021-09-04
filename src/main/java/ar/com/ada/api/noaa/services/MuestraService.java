@@ -48,6 +48,8 @@ public class MuestraService {
 
     }
 
+    
+
     public void setColorAzul(Muestra muestra){
         muestra.getBoya().setColorLuz("azul");
         repo.save(muestra);
@@ -68,7 +70,19 @@ public class MuestraService {
         return boya.getMuestras();
 
     }
-    public List<MuestraPorColorResponse> buscarMuestraPorColor(String color) {
+
+    public String colorMuestra(Double alturaNivelDelMar){
+       
+        if (alturaNivelDelMar < -100 || alturaNivelDelMar > 100) {
+            return ("rojo");
+        } else if (alturaNivelDelMar < -50 || alturaNivelDelMar > 50) {
+            return ("amarillo");
+        } else {
+            return ("verde");
+        }
+    }
+
+    public List<MuestraPorColorResponse> buscarMuestrasPorColor(String color) {
 
         List<MuestraPorColorResponse> muestrasPorColor = new ArrayList<>();
         MuestraPorColorResponse muestraPorColor = new MuestraPorColorResponse();
@@ -77,12 +91,15 @@ public class MuestraService {
         //List<Boya> boyasColor = boyaServece.buscarPorColor(color);
 
         for (Muestra muestra : repo.findAll()){
-            if (muestra.getBoya().getColorLuz().equals(color)){
-                muestraPorColor.alturaNivelDelMar = muestra.getAlturaNivelDelMar();
+
+            if (colorMuestra(muestra.getAlturaNivelDelMar()).equals(color)){
+
                 muestraPorColor.boyaId = muestra.getBoya().getBoyaId();
                 muestraPorColor.horario = muestra.getHorario();
+                muestraPorColor.alturaNivelDelMar = muestra.getAlturaNivelDelMar();                
 
-                muestrasPorColor.add(muestraPorColor);
+                muestrasPorColor.add(muestraPorColor);//add(muestraPorColor);
+                
             }
             
         }

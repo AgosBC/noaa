@@ -66,7 +66,7 @@ public class MuestraController {
 
     @GetMapping("/muestras/colores/{color}")
     public ResponseEntity<List<MuestraPorColorResponse>> traerMuestrasPorColor(@PathVariable String color){
-        return ResponseEntity.ok(service.buscarMuestraPorColor(color));
+        return ResponseEntity.ok(service.buscarMuestrasPorColor(color));
     }
 
 
