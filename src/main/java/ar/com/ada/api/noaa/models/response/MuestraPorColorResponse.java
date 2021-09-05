@@ -8,6 +8,4 @@ public class MuestraPorColorResponse {
     public Date horario;
     public Double alturaNivelDelMar;
 
-    
-    
 }

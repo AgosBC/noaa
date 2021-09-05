@@ -34,7 +34,7 @@ public class Boya {
     @OneToMany(mappedBy = "boya", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Muestra> muestras = new ArrayList<>();
 
-    //@Column(name = "alerta_id")
+    // @Column(name = "alerta_id")
     // private Integer alertaId;
 
     public void agregarMuestra(Muestra muestra) {
@@ -49,7 +49,7 @@ public class Boya {
     public void setBoyaId(Integer boyaId) {
         this.boyaId = boyaId;
     }
-  
+
     public String getColorLuz() {
         return colorLuz;
     }
@@ -82,15 +82,12 @@ public class Boya {
         this.muestras = muestras;
     }
 
-    
-    
-  /*  public AlertaEnum getAlertaId() {
-        return AlertaEnum.parse(alertaId);
-    }
-
-    public void setAlertaId(ColorLuzEnum alertaId) {
-        this.alertaId = alertaId.getValue();
-    }*/
+    /*
+     * public AlertaEnum getAlertaId() { return AlertaEnum.parse(alertaId); }
+     * 
+     * public void setAlertaId(ColorLuzEnum alertaId) { this.alertaId =
+     * alertaId.getValue(); }
+     */
 
     public enum AlertaEnum {
 
@@ -107,7 +104,7 @@ public class Boya {
         }
 
         public static AlertaEnum parse(Integer id) {
-            AlertaEnum status = null; 
+            AlertaEnum status = null;
             for (AlertaEnum item : AlertaEnum.values()) {
                 if (item.getValue().equals(id)) {
                     status = item;

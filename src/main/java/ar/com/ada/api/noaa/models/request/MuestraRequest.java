@@ -11,5 +11,4 @@ public class MuestraRequest {
     public Double latitud;
     public Double alturaNivelDelMar;
 
-    
 }

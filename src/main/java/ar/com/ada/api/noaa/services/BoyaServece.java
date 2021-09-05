@@ -22,7 +22,6 @@ public class BoyaServece {
         boya.setLatitudInstalacion(latitud);
         boya.setLongitudInstalacion(longitud);
         boya.setColorLuz("azul");
-       
 
         return repo.save(boya);
     }
@@ -40,18 +39,16 @@ public class BoyaServece {
         repo.save(boya);
     }
 
-    
-     public List<Boya> buscarPorColor(String color){
+    public List<Boya> buscarPorColor(String color) {
         List<Boya> boyasColor = new ArrayList<>();
 
         for (Boya boya : repo.findAll()) {
-            if (boya.getColorLuz().equals(color)){
+            if (boya.getColorLuz().equals(color)) {
                 boyasColor.add(boya);
             }
-            
+
         }
         return boyasColor;
-     }
-     
+    }
 
 }

@@ -7,5 +7,5 @@ public class GenericResponse {
     public Integer id;
 
     public String message;
-    
+
 }

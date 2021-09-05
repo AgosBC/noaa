@@ -5,5 +5,5 @@ public class MuestraResponse {
     public Integer id;
 
     public String color;
-    
+
 }

@@ -48,9 +48,7 @@ public class MuestraService {
 
     }
 
-    
-
-    public void setColorAzul(Muestra muestra){
+    public void setColorAzul(Muestra muestra) {
         muestra.getBoya().setColorLuz("azul");
         repo.save(muestra);
     }
@@ -71,8 +69,8 @@ public class MuestraService {
 
     }
 
-    public String colorMuestra(Double alturaNivelDelMar){
-       
+    public String colorMuestra(Double alturaNivelDelMar) {
+
         if (alturaNivelDelMar < -100 || alturaNivelDelMar > 100) {
             return ("rojo");
         } else if (alturaNivelDelMar < -50 || alturaNivelDelMar > 50) {
@@ -85,29 +83,27 @@ public class MuestraService {
     public List<MuestraPorColorResponse> buscarMuestrasPorColor(String color) {
 
         List<MuestraPorColorResponse> muestrasPorColor = new ArrayList<>();
-        
-        
-        //List<Boya> boyasColor = boyaServece.buscarPorColor(color);
 
-        for (Muestra muestra : repo.findAll()){
+        // List<Boya> boyasColor = boyaServece.buscarPorColor(color);
+
+        for (Muestra muestra : repo.findAll()) {
 
             MuestraPorColorResponse muestraPorColor = new MuestraPorColorResponse();
 
-            if (colorMuestra(muestra.getAlturaNivelDelMar()).equals(color)){
+            if (colorMuestra(muestra.getAlturaNivelDelMar()).equals(color.toLowerCase())) {
 
                 muestraPorColor.boyaId = muestra.getBoya().getBoyaId();
                 muestraPorColor.horario = muestra.getHorario();
-                muestraPorColor.alturaNivelDelMar = muestra.getAlturaNivelDelMar();                
+                muestraPorColor.alturaNivelDelMar = muestra.getAlturaNivelDelMar();
 
-                muestrasPorColor.add(muestraPorColor);//add(muestraPorColor);
-                
-            } 
-            
+                muestrasPorColor.add(muestraPorColor);// add(muestraPorColor);
+
+            }
+
         }
         return muestrasPorColor;
-        
+
     }
-    
 
     public Muestra buscarMuestraMinima(Integer boyaId) {
 
@@ -116,11 +112,12 @@ public class MuestraService {
         List<Muestra> muestras = boya.getMuestras();
 
         Muestra muestraMinima = muestras.stream().min(Comparator.comparing(Muestra::getAlturaNivelDelMar))
-                .orElseThrow(NoSuchElementException::new); // usar en el punto de buscar lista de boyas por color, que la variable sea de tipo lista? 
+                .orElseThrow(NoSuchElementException::new); // usar en el punto de buscar lista de boyas por color, que
+                                                           // la variable sea de tipo lista?
 
         return muestraMinima;
 
     }
     // https://www.baeldung.com/java-collection-min-max <--- Explicacion
-
+    // equalsIgnoreCase (no case sensitive) .toLowerCase
 }
